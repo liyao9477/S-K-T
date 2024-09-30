@@ -125,3 +125,47 @@ plt.legend(loc="lower right")
 plt.show()
 
 roc_auc_score(y_train_5, y_score_forest)
+
+
+### multiclass Classification 多分类，OvR or OvO
+from sklearn.svm import SVC
+svm_clf = SVC()
+svm_clf.fit(X_train, y_train)
+svm_clf.predict([some_digit])
+
+some_digit_score = svm_clf.decision_function([some_digit])
+some_digit_score   # OvO strategy, 10 scores
+np.argmax(some_digit_score)
+svm_clf.classes_
+svm_clf.classes_[5]
+
+from sklearn.multiclass import OneVsRestClassifier  # OvR strategy
+ovr_clf = OneVsRestClassifier(SVC())
+ovr_clf.fit(X_train, y_train)
+ovr_clf.predict([some_digit])
+len(ovr_clf.estimators_)
+
+sgd_clf.fit(X_train, y_train)
+sgd_clf.predict([some_digit])
+sgd_clf.decision_function([some_digit])
+cross_val_score(sgd_clf, X_train, y_train, cv=3, scoring="accuracy")
+
+#### error analysis
+y_train_pred = cross_val_predict(sgd_clf, X_train, y_train, cv=3)
+conf_mx = confusion_matrix(y_train, y_train_pred)
+conf_mx
+
+plt.matshow(conf_mx, cmap = plt.cm.gray)
+plt.show()
+
+row_sums = conf_mx.sum(axis = 1, keepdims=True)
+norm_conf_mx = conf_mx / row_sums
+
+np.fill_diagonal(norm_conf_mx, 0)
+plt.matshow(norm_conf_mx, cmap = plt.cm.gray)
+plt.show()
+
+
+
+
+
