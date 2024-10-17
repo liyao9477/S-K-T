@@ -56,6 +56,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures
 
 X, y = make_moons(n_samples=100, noise=0.15)
+
 polynomial_svm_clf = Pipeline([
     ("poly_features", PolynomialFeatures(degree=3)),
     ("scaler", StandardScaler()),
